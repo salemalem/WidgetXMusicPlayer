@@ -5,9 +5,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -36,6 +41,7 @@ public class HomeFragment extends Fragment {
     ListView musicListView;
 
     ArrayAdapter<String> stringArrayAdapter;
+    MediaPlayer mp;
     View view;
 
     @Nullable
@@ -47,6 +53,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        setPadding();
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -60,12 +67,12 @@ public class HomeFragment extends Fragment {
             }
 
         } else {
-            doStuff();
+            showMusicOnListView();
         }
 
     }
 
-    public void doStuff() {
+    public void showMusicOnListView() {
         musicListView = (ListView) view.findViewById(R.id.musicListView);
         stringArrayList = new ArrayList<>();
         getMusic();
@@ -76,6 +83,21 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open music player to play desired song
+//                try {
+//                    mp.stop();
+//                } catch (Exception e) {
+//                    //
+//                }
+//                playMusic(musicParts[position]);
+                PlayerFragment playerFragment= new PlayerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("location", musicParts[position]);
+                playerFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentsContainer, playerFragment)
+                        .addToBackStack(null)
+                        .commit();
+//                bott.setSelectedItemId(R.id.home);
 //                Log.i("debugparent", locationsString);
 //                Log.i("debugparent", Integer.toString(position));
 //                Log.i("debugparent", String.valueOf(position));
@@ -88,7 +110,7 @@ public class HomeFragment extends Fragment {
 //                if(musicIsPlaying) {
 //                    finishActivity(1);
 //                }
-                musicIsPlaying = true;
+//                musicIsPlaying = true;
 //                Intent intent = new Intent(getContext(), music_player.class);
 //                intent.putExtra("path", musicParts[position]);
 //                intent.putExtra("")
@@ -129,7 +151,26 @@ public class HomeFragment extends Fragment {
             } while (songCursor.moveToNext());
             musicParts = locationsString.split("\\|");
         }
+    }
 
+    private void playMusic(String path) {
+        try {
+            mp = new MediaPlayer();
+//            mp.setDataSource("/storage/emulated/0/Download/Lil Morty - Choppa on me.mp3");
+            mp.setDataSource(path);
+            mp.prepare();
+            mp.start();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPadding() {
+
+//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomNavigation);
+//        int height =  bottomNavigationView.getWidth();
+//        musicListView.setPadding(0, 0,  0,  height);
+//        Log.i("Log.i", String.valueOf(getActivity().getParent()));
     }
 }

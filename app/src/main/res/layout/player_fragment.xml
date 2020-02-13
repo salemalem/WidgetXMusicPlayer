@@ -5,10 +5,6 @@
     android:background="@color/lightGreen"
     android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/player"
-        android:textColor="@color/white"/>
+
 
 </RelativeLayout>
