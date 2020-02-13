@@ -49,11 +49,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
-    List<String> Singer;
-    List<String> Song;
-    List<String> Link;
-    List<String> SongNameAndArtistListToShow;
-    View view;
+    private List<String> Singer;
+    private List<String> Song;
+    private List<String> Link;
+    private List<String> SongNameAndArtistListToShow;
+    private View view;
 
     private ListView downloadedMusicListView;
     private SearchView searchView;
@@ -70,7 +70,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         searchView = view.findViewById(R.id.searchView);
-        downloadedMusicListView = (ListView) view.findViewById(R.id.downloadedMusicListView);
+        downloadedMusicListView = view.findViewById(R.id.downloadedMusicListView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -87,29 +87,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    //    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-//        super.onCreate(savedInstanceState, persistentState);
-//        setContentView(R.layout.search_fragment);
-//
-//        searchView = view.findViewById(R.id.searchView);
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//
-//                getWebsite(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
-//    }
-
-    public String toNormalURL(String text) {
+    private String toNormalURL(String text) {
 
         String builder = "";
 
@@ -123,7 +101,6 @@ public class SearchFragment extends Fragment {
         otw.delete(0, 3);
 
 
-
         String url = "https://mp3-tut.net/search?query=" + otw;
 
         return url;
@@ -131,7 +108,6 @@ public class SearchFragment extends Fragment {
 
     //---------------------------------------------------//
 
-    //---------------------------------------------------//
     private void getWebsite(final String name) {
         new Thread(new Runnable() {
             @Override
@@ -148,7 +124,7 @@ public class SearchFragment extends Fragment {
 
                     for (int data_key = 0; data_key < 50; data_key++) {
 
-                        Elements smtg = doc.select("div[data-key=\"" + Integer.toString(data_key) + "\"]");
+                        Elements smtg = doc.select("div[data-key=\"" + data_key + "\"]");
 
                         Elements singer = smtg.select("div.audio-list-entry-inner div.track-name-container div.track div.title a");
                         Elements composition = smtg.select("div.audio-list-entry-inner div.track-name-container div.track div.title:nth-child(2)");
