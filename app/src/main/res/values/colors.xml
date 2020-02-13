@@ -9,4 +9,5 @@
     <color name="lightGreen">#8BC34A</color>
 
     <color name="white">#fff</color>
+    <color name="colorOfSearchView">#86E989</color>
 </resources>
