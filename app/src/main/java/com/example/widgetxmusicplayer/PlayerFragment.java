@@ -78,9 +78,10 @@ public class PlayerFragment extends Fragment {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                btn_play.setImageResource(R.drawable.ic_play_arrow);
+                btn_play.setImageResource(R.drawable.ic_pause);
             }
         });
+
 
         try {
             mp.stop();
@@ -122,6 +123,7 @@ public class PlayerFragment extends Fragment {
                 mHandler.post(mUpdateTimeTask);
             }
         });
+
         buttonPlayerAction();
     }
 
