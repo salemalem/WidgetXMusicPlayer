@@ -14,6 +14,10 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
+    SearchFragment searchFragment;
+    HomeFragment homeFragment;
+    PlayerFragment playerFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
+        searchFragment = new SearchFragment();
+        homeFragment = new HomeFragment();
+        playerFragment = new PlayerFragment();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, new HomeFragment()).commit();
         }
+
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -31,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.search:
-                        fragment = new SearchFragment();
+                        fragment = searchFragment;
                         break;
                     case R.id.home:
-                        fragment = new HomeFragment();
+                        fragment = homeFragment;
                         break;
                     case R.id.player:
-                        fragment = new PlayerFragment();
+                        fragment = playerFragment;
                         break;
                 }
 
