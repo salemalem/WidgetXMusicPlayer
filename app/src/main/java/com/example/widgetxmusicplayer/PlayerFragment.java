@@ -1,6 +1,5 @@
 package com.example.widgetxmusicplayer;
 
-import android.content.res.AssetFileDescriptor;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -8,10 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,14 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PlayerFragment extends Fragment {
     String location;
 
-    private View parent_view;
     private SeekBar seek_song_progressbar;
     private FloatingActionButton btn_play;
     private TextView tv_song_current_duration, tv_song_total_duration;
@@ -40,17 +33,13 @@ public class PlayerFragment extends Fragment {
     private ImageButton btn_prev;
 
     MediaPlayer mp;
-//    private MediaPlayer mp = new MediaPlayer();
 
     private Handler mHandler = new Handler();
 
     private MusicUtils utils;
-    private Fragment fragment;
     private String[] locations;
     private Integer position;
-//    public Fragment PlayerFragmentState;
 
-    public AssetFileDescriptor afd;
 
 
     public View view;
@@ -58,16 +47,10 @@ public class PlayerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            locations = this.getArguments().getStringArray("locations");
-//            position = this.getArguments().getInt("position");
-//            location = locations[position];
-//        }
         try {
             locations = this.getArguments().getStringArray("locations");
             position = this.getArguments().getInt("position");
             location = locations[position];
-//            PlayerFragmentState = getActivity().getSupportFragmentManager().getFragment(savedInstanceState, "PlayerFragmentState");
         } catch (Exception e) {
 
         }
@@ -77,56 +60,16 @@ public class PlayerFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-////        if (savedInstanceState != null) {
-////            //Restore the fragment's state here
-////            locations = savedInstanceState.getStringArray("locations");
-////            position = savedInstanceState.getInt("position");
-////            location = locations[position];
-////        } else {
-//         if (savedInstanceState != null) {
-//            locations = savedInstanceState.getStringArray("locations");
-//            position = savedInstanceState.getInt("position");
-//            location = locations[position];
-//        }
-//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        if (savedInstanceState != null) {
-//            locations = savedInstanceState.getStringArray("locations");
-//            position = savedInstanceState.getInt("position");
-//            location = locations[position];
-//        }
         setMusicPlayerComponents();
     }
 
-//    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-////        if (position != null) {
-//        super.onSaveInstanceState(outState);
-//        outState.putStringArray("locations", locations);
-//        outState.putInt("position", position);
-////        }
-////        getActivity().getSupportFragmentManager().putFragment(outState, "PlayerFragmentKey", PlayerFragmentState);
-//    }
-
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//
-//        locations = savedInstanceState.getStringArray("locations");
-//        position = savedInstanceState.getInt("position");
-//        location = locations[position];
-//        super.onViewStateRestored(savedInstanceState);
-//    }
 
     private void setMusicPlayerComponents() {
-//        parent_view = view.findViewById(R.id.parent_view);
         seek_song_progressbar = view.findViewById(R.id.seek_song_progressbar);
         btn_play = view.findViewById(R.id.btn_play);
         btn_next = view.findViewById(R.id.btn_next);
@@ -147,13 +90,7 @@ public class PlayerFragment extends Fragment {
         }
 
 
-//        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            @Override
-//            public void onCompletion(MediaPlayer mp) {
-                btn_play.setImageResource(R.drawable.ic_play_arrow);
-//            }
-//        });
-
+        btn_play.setImageResource(R.drawable.ic_play_arrow);
 
         try {
             mp = new MediaPlayer();
@@ -168,9 +105,8 @@ public class PlayerFragment extends Fragment {
                     }
                 }
             });
-//            afd = getActivity().getAssets().openFd(location);
             mp.setDataSource(location);
-//            afd.close();
+
             mp.prepare();
             mp.start();
             btn_play.setImageResource(R.drawable.ic_pause);
@@ -391,13 +327,5 @@ public class PlayerFragment extends Fragment {
         seek_song_progressbar.setProgress(progress);
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        mHandler.removeCallbacks(mUpdateTimeTask);
-//        mp.stop();
-//        mp.release();
-//        mp = null;
-//    }
 
 }
