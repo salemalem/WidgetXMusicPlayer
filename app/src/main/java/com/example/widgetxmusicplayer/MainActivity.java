@@ -4,19 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
-    SearchFragment searchFragment;
-    HomeFragment homeFragment;
-    PlayerFragment playerFragment;
+    SearchFragment searchFragment = new SearchFragment();
+    HomeFragment homeFragment = new HomeFragment();
+    public PlayerFragment playerFragment = new PlayerFragment();
+    Fragment fragment = null;
+
+    MediaPlayer mp = new MediaPlayer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        searchFragment = new SearchFragment();
-        homeFragment = new HomeFragment();
-        playerFragment = new PlayerFragment();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, new HomeFragment()).commit();
@@ -38,20 +41,22 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.search:
-                        fragment = searchFragment;
+//                        fragment = searchFragment;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, searchFragment).commit();
                         break;
                     case R.id.home:
-                        fragment = homeFragment;
+//                        fragment = homeFragment;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, homeFragment).commit();
                         break;
-                    case R.id.player:
-                        fragment = playerFragment;
-                        break;
+//                    case R.id.player:
+////                        fragment = playerFragment;
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, playerFragment).commit();
+//                        break;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, fragment).commit();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentsContainer, fragment).commit();
                 return true;
             }
         });

@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,32 +36,91 @@ public class PlayerFragment extends Fragment {
     private FloatingActionButton btn_play;
     private TextView tv_song_current_duration, tv_song_total_duration;
 
-    private MediaPlayer mp;
+    MediaPlayer mp;
+//    private MediaPlayer mp = new MediaPlayer();
+
     private Handler mHandler = new Handler();
 
     private MusicUtils utils;
+    private Fragment fragment;
+    private String[] locations;
+    private Integer position;
+//    public Fragment PlayerFragmentState;
 
     public AssetFileDescriptor afd;
+
 
     public View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        if (savedInstanceState != null) {
+//            locations = this.getArguments().getStringArray("locations");
+//            position = this.getArguments().getInt("position");
+//            location = locations[position];
+//        }
         try {
-            location = this.getArguments().getString("location");
+            locations = this.getArguments().getStringArray("locations");
+            position = this.getArguments().getInt("position");
+            location = locations[position];
+//            PlayerFragmentState = getActivity().getSupportFragmentManager().getFragment(savedInstanceState, "PlayerFragmentState");
         } catch (Exception e) {
-            
+
         }
+
+
         view = inflater.inflate(R.layout.player_fragment, container, false);
         return view;
     }
 
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+////        if (savedInstanceState != null) {
+////            //Restore the fragment's state here
+////            locations = savedInstanceState.getStringArray("locations");
+////            position = savedInstanceState.getInt("position");
+////            location = locations[position];
+////        } else {
+//         if (savedInstanceState != null) {
+//            locations = savedInstanceState.getStringArray("locations");
+//            position = savedInstanceState.getInt("position");
+//            location = locations[position];
+//        }
+//    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+//        if (savedInstanceState != null) {
+//            locations = savedInstanceState.getStringArray("locations");
+//            position = savedInstanceState.getInt("position");
+//            location = locations[position];
+//        }
         setMusicPlayerComponents();
     }
+
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+////        if (position != null) {
+//        super.onSaveInstanceState(outState);
+//        outState.putStringArray("locations", locations);
+//        outState.putInt("position", position);
+////        }
+////        getActivity().getSupportFragmentManager().putFragment(outState, "PlayerFragmentKey", PlayerFragmentState);
+//    }
+
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//
+//        locations = savedInstanceState.getStringArray("locations");
+//        position = savedInstanceState.getInt("position");
+//        location = locations[position];
+//        super.onViewStateRestored(savedInstanceState);
+//    }
 
     private void setMusicPlayerComponents() {
 //        parent_view = view.findViewById(R.id.parent_view);
@@ -73,23 +133,25 @@ public class PlayerFragment extends Fragment {
         tv_song_current_duration = view.findViewById(R.id.tv_song_current_duration);
         tv_song_total_duration = view.findViewById(R.id.total_duration);
 
-
-        mp = new MediaPlayer();
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                btn_play.setImageResource(R.drawable.ic_pause);
-            }
-        });
-
-
         try {
             mp.stop();
+            mp.release();
+            mp = null;
         } catch (Exception e) {
 
         }
 
+
+//        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+                btn_play.setImageResource(R.drawable.ic_play_arrow);
+//            }
+//        });
+
+
         try {
+            mp = new MediaPlayer();
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
 //            afd = getActivity().getAssets().openFd(location);
             mp.setDataSource(location);
@@ -217,16 +279,9 @@ public class PlayerFragment extends Fragment {
 //    public void onDestroy() {
 //        super.onDestroy();
 //        mHandler.removeCallbacks(mUpdateTimeTask);
+//        mp.stop();
 //        mp.release();
+//        mp = null;
 //    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            getActivity().finish();
-        } else {
-            Snackbar.make(parent_view, item.getTitle(), Snackbar.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

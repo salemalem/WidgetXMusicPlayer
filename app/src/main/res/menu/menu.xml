@@ -11,9 +11,9 @@
         android:title="Үй"
         android:icon="@drawable/ic_home_black_24dp"/>
 
-    <item
-        android:id="@+id/player"
-        android:title="Плеер"
-        android:icon="@drawable/ic_music_note_black_24dp"/>
+<!--    <item-->
+<!--        android:id="@+id/player"-->
+<!--        android:title="Плеер"-->
+<!--        android:icon="@drawable/ic_music_note_black_24dp"/>-->
 
 </menu>

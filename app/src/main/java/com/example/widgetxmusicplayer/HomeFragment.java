@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.widgetxmusicplayer.MainActivity.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     String locationsString = "";
     String[] musicParts;
     Boolean musicIsPlaying = false;
+    PlayerFragment playerFragment = new PlayerFragment();
 
     ListView musicListView;
 
@@ -89,13 +91,14 @@ public class HomeFragment extends Fragment {
 //                    //
 //                }
 //                playMusic(musicParts[position]);
-                PlayerFragment playerFragment= new PlayerFragment();
+//                PlayerFragment playerFragment= new PlayerFragment();
+//                MainActivity mainActivity = new MainActivity();
                 Bundle bundle = new Bundle();
-                bundle.putString("location", musicParts[position]);
+                bundle.putStringArray("locations", musicParts);
+                bundle.putInt("position", position);
                 playerFragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentsContainer, playerFragment)
-                        .addToBackStack(null)
                         .commit();
 //                bott.setSelectedItemId(R.id.home);
 //                Log.i("debugparent", locationsString);
