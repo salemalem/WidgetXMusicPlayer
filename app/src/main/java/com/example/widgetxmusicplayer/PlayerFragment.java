@@ -153,6 +153,16 @@ public class PlayerFragment extends Fragment {
         try {
             mp = new MediaPlayer();
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    try {
+                        playNextSong(mediaPlayer);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 //            afd = getActivity().getAssets().openFd(location);
             mp.setDataSource(location);
 //            afd.close();
@@ -187,6 +197,30 @@ public class PlayerFragment extends Fragment {
         });
 
         buttonPlayerAction();
+    }
+
+    void playNextSong(MediaPlayer mp) throws Exception {
+        mp.reset();
+
+        if (position < locations.length) {
+            position++;
+        } else {
+            position = 0;
+        }
+
+        mp.setDataSource(locations[position]);
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try {
+                    playNextSong(mp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mp.prepare();
+        mp.start();
     }
 
     private void buttonPlayerAction() {
