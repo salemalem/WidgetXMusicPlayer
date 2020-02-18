@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ public class PlayerFragment extends Fragment {
     private SeekBar seek_song_progressbar;
     private FloatingActionButton btn_play;
     private TextView tv_song_current_duration, tv_song_total_duration;
+    private ImageButton btn_next;
+    private ImageButton btn_prev;
 
     MediaPlayer mp;
 //    private MediaPlayer mp = new MediaPlayer();
@@ -126,6 +129,8 @@ public class PlayerFragment extends Fragment {
 //        parent_view = view.findViewById(R.id.parent_view);
         seek_song_progressbar = view.findViewById(R.id.seek_song_progressbar);
         btn_play = view.findViewById(R.id.btn_play);
+        btn_next = view.findViewById(R.id.btn_next);
+        btn_prev = view.findViewById(R.id.btn_prev);
 
         seek_song_progressbar.setProgress(0);
         seek_song_progressbar.setMax(MusicUtils.MAX_PROGRESS);
@@ -197,6 +202,7 @@ public class PlayerFragment extends Fragment {
         });
 
         buttonPlayerAction();
+
     }
 
     void playNextSong(MediaPlayer mp) throws Exception {
@@ -223,6 +229,58 @@ public class PlayerFragment extends Fragment {
         mp.start();
     }
 
+    void playNextSong_button() throws IOException {
+        mp.reset();
+
+        if (position < locations.length) {
+            position++;
+        } else {
+            position = 0;
+        }
+
+        mp.setDataSource(locations[position]);
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try {
+                    playNextSong(mp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mp.prepare();
+        mp.start();
+    }
+
+
+    void playPreviousSong_button() throws IOException {
+        mp.reset();
+
+        if (position > 0) {
+            position--;
+        } else {
+            position = locations.length - 1;
+        }
+
+        mp.setDataSource(locations[position]);
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try {
+                    playNextSong(mp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mp.prepare();
+        mp.start();
+
+    }
+
+
+
     private void buttonPlayerAction() {
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +292,30 @@ public class PlayerFragment extends Fragment {
                     mp.start();
                     btn_play.setImageResource(R.drawable.ic_pause);
                     mHandler.post(mUpdateTimeTask);
+                }
+            }
+        });
+
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    playNextSong_button();
+                    mHandler.post(mUpdateTimeTask);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btn_prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    playPreviousSong_button();
+                    mHandler.post(mUpdateTimeTask);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
